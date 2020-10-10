@@ -1,0 +1,237 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API - Livraria Virtual",
+    "description": "Livraria Virtual do Alex",
+    "contact": {
+      "email": "alexmillerc@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/Alex-Miller/Livraria/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "tags": [
+    {
+      "name": "livros",
+      "description": "Livraria Virtual"
+    }
+  ],
+  "paths": {
+    "/livros": {
+      "get": {
+        "tags": [
+          "livros"
+        ],
+        "summary": "Pesquisar livros",
+        "description": "Pesquisa livros na livraria virtual",
+        "operationId": "pesquisaLivros",
+        "parameters": [
+          {
+            "name": "isbn",
+            "in": "query",
+            "description": "Pesquisa por ISBN",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nome",
+            "in": "query",
+            "description": "Pesquisa por nome",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "autor",
+            "in": "query",
+            "description": "Pesquisa por autor",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Livros encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LivroInfo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Informações inválidas"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "livros"
+        ],
+        "summary": "Adicionar livros",
+        "description": "Adiciona livros a livraria virtual",
+        "operationId": "adicionaLivros",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LivroInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Livro adicionado"
+          },
+          "400": {
+            "description": "Livro inválido"
+          },
+          "409": {
+            "description": "Livro já existente"
+          }
+        }
+      }
+    },
+    "/livros/{isbn}": {
+      "put": {
+        "tags": [
+          "livros"
+        ],
+        "summary": "Alterar livros",
+        "description": "Altera informações de um livro",
+        "operationId": "alteraLivros",
+        "parameters": [
+          {
+            "name": "isbn",
+            "in": "path",
+            "description": "Pesquisa por ISBN",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LivroInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Livro alterado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LivroInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Livro inválido"
+          },
+          "404": {
+            "description": "Livro não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "livros"
+        ],
+        "summary": "Excluir livros",
+        "description": "Exclui livros da livraria virtual",
+        "operationId": "excluiLivros",
+        "parameters": [
+          {
+            "name": "isbn",
+            "in": "path",
+            "description": "Pesquisa por ISBN",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Livro excluido"
+          },
+          "404": {
+            "description": "Livro não encontrado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LivroInfo": {
+        "required": [
+          "anoPublicacao",
+          "autor",
+          "isbn",
+          "nome",
+          "preco"
+        ],
+        "type": "object",
+        "properties": {
+          "isbn": {
+            "type": "string",
+            "example": "70707070"
+          },
+          "nome": {
+            "type": "string",
+            "example": "Código Limpo: Habilidades Práticas do Agile Software"
+          },
+          "autor": {
+            "type": "string",
+            "example": "Robert C. Martin"
+          },
+          "anoPublicacao": {
+            "type": "integer",
+            "format": "int32",
+            "example": 2009
+          },
+          "preco": {
+            "type": "number",
+            "format": "double",
+            "example": 96.90
+          }
+        }
+      }
+    }
+  }
+}
